@@ -4,33 +4,95 @@
 <style>
 .graph {
 	display: block;
-	width: 600px;
-	height: 300px;
-	border-radius: 3px;
-	border: solid 1px gray;
-	border-left: solid 4px orange;
+	border-radius: 5px;
+	border: solid 0px gray;
 	padding: 20px;
+	background: #f0f0f0;
+	margin: 10px 20px;
+}
+.test {
+	width: 45%;
+	height: 300px;
 	float: left;
+}
+.codebox {
+	padding: 20px;
+	border: solid 1px #efefef;
+	border-left: solid 3px forestgreen;
+	border-radius: 3px;
+	margin: 10px 10px 40px;
+	width: 40%;
+	font-size: 16px;
+	font-family: Consolas;
+	max-height: 300px;
+	float: left;
+	overflow-y: auto;
+	word-wrap: break-word;
+}
+body {
+	margin: 0px;
+	padding: 0px;
+}
+h2 {
+	color: white;
+}
+h4 {
+	padding-left: 20px;
+}
+a{
+	text-decoration: none;
+	color: skyblue;
+}
+hr {
+	margin: 20px;
+	border: solid 1px purple;
 }
 </style>
 <script src="graph.js"></script>
 </head>
+<body>
 
-	<body>
+<div style="margin: 0px;background: #444;padding: 20px;">
+	<h2>A simple library to render charts</h2>
+	<a href="https://github.com/mmpataki/graphjs/">See the source on github</a>
+</div>
+<br/><br/><br/><br/>
+<!--Model data 12, 340, 52, 230, 194, 323,45, 263, 233, 46, 421, 213, 291, 56, 234, 632, 124, 452, 900-->
 
-		<h2>
-			A simple library to render charts
-		</h2>
-		<!--Model data 12, 340, 52, 230, 194, 323,45, 263, 233, 46, 421, 213, 291, 56, 234, 632, 124, 452, 900-->
-		<div class="graph" gdata='{"xdivs": 500, "ydivs": 5, "stroke": "gray", "ydata": [34,32,67,78,34,45,67,45,78,89,90]}'>
-			<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
-				<div style="width: 50px; height: 50px">
-					<img src="" />
-				</div>
-			</div>
-		</div>
-		<table id="mdiv" style="float: left; margin: -10px 50px; font-family: consolas" cellpadding="5px">
-		</table>
+<div class="graph test" gdata='{"type": "dot", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"stroke": "forestgreen", "data": [484,529,201,536,136,265,45,578,107,55]}, {"stroke": "darkred",  "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
+	<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
+	</div>
+</div>
+<pre class="codebox">
+</pre>
 
-	</body>
+<div class="graph test" gdata='{"type": "region", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"fill": "skyblue", "data": [484,529,201,536,136,265,45,578,107,55]}, {"fill": "forestgreen", "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
+	<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
+	</div>
+</div>
+<pre class="codebox">
+</pre>
+
+<div class="graph test" gdata='{"type": "bar", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"fill": "forestgreen", "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
+	<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
+	</div>
+</div>
+<pre class="codebox">
+</pre>
+
+<table id="mdiv" style="float: left; margin: -10px 50px; font-family: consolas" cellpadding="5px">
+</table>
+
+<script>
+	var graphs = document.getElementsByClassName("graph");
+	for (var i=0; i<graphs.length; i++) {
+		var g = graphs[i].nextElementSibling;
+		var html = graphs[i].outerHTML.toString();
+		html = html.replace(/</g, "&lt;");
+		html = html.replace(/>/g, "&gt;");
+		g.innerHTML = "# code\n\n" + html;
+	}
+</script>
+
+</body>
 </html>
