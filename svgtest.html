@@ -18,14 +18,18 @@
 
 	<body>
 
-		<div>
-			<textarea rows="5" columns="">
-		</div>
-		<div class="graph" gdata='{"xdivs": 500, "ydivs": 5, "stroke": "gray", "ydata": [12, 340, 52, 230, 194, 323,45, 263, 233, 46, 421, 213, 291, 56, 234, 632, 124, 452, 900]}'>
-			<div style="display: block; height: 100%;">
+		<h2>
+			A simple library to render charts
+		</h2>
+		<!--Model data 12, 340, 52, 230, 194, 323,45, 263, 233, 46, 421, 213, 291, 56, 234, 632, 124, 452, 900-->
+		<div class="graph" gdata='{"xdivs": 500, "ydivs": 5, "stroke": "gray", "ydata": [34,32,67,78,34,45,67,45,78,89,90]}'>
+			<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
+				<div style="width: 50px; height: 50px">
+					<img src="" />
+				</div>
 			</div>
 		</div>
-		<table id="mdiv" style="float: left; margin: 50px; font-family: consolas" cellpadding="5px">
+		<table id="mdiv" style="float: left; margin: -10px 50px; font-family: consolas" cellpadding="5px">
 		</table>
 
 	</body>
