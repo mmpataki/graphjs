@@ -1,4 +1,17 @@
 var mdiv;
+
+function convert_to_png(svg) {
+
+	var
+	xml  = new XMLSerializer().serializeToString(svg),
+    	data = "data:image/svg+xml;base64," + btoa(xml),
+    	img  = new Image()
+
+	img.setAttribute('src', data)
+	document.body.appendChild(img);
+
+}
+
 window.onload = function dgs() {
 	mdiv = document.getElementById("mdiv");
 	var xs = document.getElementsByClassName("graph");
@@ -22,22 +35,10 @@ function draw_graph(ele, data) {
 	var dtemp = "", ctemp = "";
 	var xoff = 10;
 	var yoff = 10;
-	var yaspect = (ht - (2 * yoff)) / ((max - min));
+	var yaspect = (ht - (2 * yoff)) / ((max));
 	var xaspect = (wd - (2 * xoff)) / (data.ydata.length - 1);
-	var yh = yaspect * ht / (data.ydivs - 1);
-	var xw = xaspect * wd / (data.xdivs - 1);
-
-	wkv("height", ht);
-	wkv("width", wd);
-	wkv("xoffset", xoff);
-	wkv("yoffset", yoff);
-	wkv("max", max);
-	wkv("min", min);
-	wkv("x-aspect ratio", xaspect);
-	wkv("y-aspect ratio", yaspect);
-	wkv("grid-y-rowheight", yh);
-	wkv("grid-x-colwidth", xw);
-	wkv("data", data.ydata);
+	var yh = ht / (data.ydivs);
+	var xw = xaspect * wd / (data.xdivs -1);
 
 	data.background = data.background == null ? "#fff" : data.background;
 	data.stroke = data.stroke == null ? "#000" : data.stroke;
@@ -58,6 +59,18 @@ function draw_graph(ele, data) {
 		ctemp += `<circle cx="${x}" cy="${y}" r="3" stroke="black" stroke-width="2" fill="white" />`;
 	}
 	ele.innerHTML = `<svg height='${ht}' width='${wd}' style='background: ${data.background};'>${glines}<polyline style='fill:none; stroke:${data.stroke}; stroke-width:2px;' points='${dtemp}'/>${ctemp}</svg>`;
+
+	wkv("height", ht);
+	wkv("width", wd);
+	wkv("xoffset", xoff);
+	wkv("yoffset", yoff);
+	wkv("max", max);
+	wkv("min", min);
+	wkv("x-aspect ratio", xaspect);
+	wkv("y-aspect ratio", yaspect);
+	wkv("grid-y-rowheight", yh);
+	wkv("grid-x-colwidth", xw);
+	wkv("data", data.ydata);
 }
 
 function wkv(key, value) {
