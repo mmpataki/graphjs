@@ -1,4 +1,5 @@
 var mdiv;
+var debug = false;
 
 function convert_to_png(svg) {
 
@@ -15,6 +16,14 @@ window.onresize = window.onload = function dgs() {
 	mdiv = document.getElementById("mdiv");
 	var xs = document.getElementsByClassName("graph");
 	for (var i = 0; i < xs.length; i++) {
+
+		if(xs[i].children[0] == null) {
+			var ele = document.createElement("div");
+			ele.style.display = "block";
+			ele.style.height = "100%";
+			xs[i].appendChild(ele);
+		}
+
 		draw_graph(xs[i].children[0], JSON.parse(xs[i].getAttribute("gdata")));
 	}
 }
@@ -47,25 +56,30 @@ function draw_graph(ele, gdata) {
 	var ht = +ele.offsetHeight;
 	var wd = +ele.offsetWidth;
 	var dtemp = "", ctemp = "", points = "";
-	var xoff = 10;
-	var yoff = 10;
-	var yaspect = (ht - (2 * yoff)) / ((max));
-	var xaspect = (wd - (2 * xoff)) / (gdata.datasets[0].data.length);
+	var xoff = 30;
+	var yoff = 15;
+	var yaspect = (ht - (2 * yoff)) / max;
+	var xaspect = (wd - (1 * xoff)) / (gdata.datasets[0].data.length + (gdata.type == "bar" ? 0 : -1));
 	var yh = ht / gdata.ydivs;
-	var xw = wd / gdata.xdivs;
+	var xw = (wd + xoff) / gdata.xdivs;
 
-	var glines = `<line x1="0" y1="${ht}" x2="${wd}" y2="${ht}" style="stroke:gray" /><line x1="0" y1="${ht}" x2="0" y2="0" style="stroke:gray" />`;
+	ht -= yoff;
+
+	var glines = "";
+	var glabels = "";
 
 	/*  horizontal grids */
 	if (gdata.hgrids) {
-		for (var tmp = ht - yh; tmp > 0; tmp -= yh) {
-			glines += `<line x1="0" y1="${tmp}" x2="${wd}" y2="${tmp}" style="stroke:lightgray; stroke-width: 1px;"/>`;
+		for (var tmp = ht; tmp > 0; tmp -= yh) {
+			glines += `<line x1="${xoff}" y1="${tmp}" x2="${wd}" y2="${tmp}" style="stroke:lightgray; stroke-width: 1px;"/>`;
+			glabels += `<text x='${xoff-10}' y='${tmp}' text-anchor='end'>${Math.round((ht - tmp) / yaspect)}</text>`;
 		}
 	}
 	/*  vertical grids */
 	if (gdata.vgrids) {
-		for (var tmp = xw; tmp < wd; tmp += xw) {
+		for (var tmp = xoff; tmp < wd; tmp += xw) {
 			glines += `<line x1="${tmp}" y1="${0}" x2="${tmp}" y2="${ht}" style="stroke:lightgray; stroke-width: 1px;"/>`;
+			glabels += `<text x='${tmp}' y='${ht+yoff}' text-anchor='middle'>${Math.round(tmp / xaspect)}</text>`;
 		}
 	}
 
@@ -90,7 +104,7 @@ function draw_graph(ele, gdata) {
 			var cfcolor = (gdata.type == "dot") ? dataset.cfill : "transparent";
 
 			for (var j = 0; j < dataset.data.length; j++) {
-				x = xoff + (j * xaspect) + (xaspect / 2);
+				x = xoff + (j * xaspect);
 				y = (ht - (yaspect * dataset.data[j]));
 				points += x + "," + y + " ";
 				ctemp  += `<circle cx="${x}" cy="${y}" r="${dataset.cradius}" stroke="${scolor}" stroke-width="2" fill="${cfcolor}"><title>${dataset.data[j]}</title></circle>`;
@@ -99,28 +113,29 @@ function draw_graph(ele, gdata) {
 			if(gdata.type == "dot") {
 				dtemp += `<polyline style='fill:none; stroke:${dataset.stroke}; stroke-width:2px;' points='${points}'/>${ctemp}`;
 			} else {
-				dtemp += `<polygon style='fill: ${dataset.fill}; stroke:${dataset.fill}; opacity: ${dataset.opacity}; stroke-width:2px;' points='${points} ${wd},${y} ${wd},${ht} 0,${ht} ${0},${(ht-(yaspect*dataset.data[0]))} ${xoff},${(ht-(yaspect*dataset.data[0]))}'/>${ctemp}`;
+				dtemp += `<polygon style='fill: ${dataset.fill}; stroke:${dataset.fill}; opacity: ${dataset.opacity}; stroke-width:2px;' points='${points} ${wd},${y} ${wd},${ht} ${xoff},${ht} ${xoff},${(ht-(yaspect*dataset.data[0]))} ${xoff}'/>${ctemp}`;
 			}
 
 			ctemp = "";
 			points = "";
 		}
 	}
-	ele.innerHTML = `<svg height='${ht}' width='${wd}' style='background: ${gdata.background};'>${glines}${dtemp}</svg>`;
+	ele.innerHTML = `<svg height='${ht + (2 * yoff)}' width='${wd + (2 * xoff)}' style='background: ${gdata.background};'>${glines}${dtemp}${glabels}</svg>`;
 
-	/*
-	wkv("height", ht);
-	wkv("width", wd);
-	wkv("xoffset", xoff);
-	wkv("yoffset", yoff);
-	wkv("max", max);
-	wkv("min", min);
-	wkv("x-aspect ratio", xaspect);
-	wkv("y-aspect ratio", yaspect);
-	wkv("grid-y-rowheight", yh);
-	wkv("grid-x-colwidth", xw);
-	wkv("data", JSON.stringify(gdata.datasets));
-	*/
+	if(debug) {
+		wkv("height", ht);
+		wkv("width", wd);
+		wkv("xoffset", xoff);
+		wkv("yoffset", yoff);
+		wkv("max", max);
+		wkv("min", min);
+		wkv("x-aspect ratio", xaspect);
+		wkv("y-aspect ratio", yaspect);
+		wkv("grid-y-rowheight", yh);
+		wkv("grid-x-colwidth", xw);
+		wkv("data", JSON.stringify(gdata.datasets));
+	}
+
 }
 
 function wkv(key, value) {

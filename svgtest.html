@@ -2,14 +2,6 @@
 
 <head>
 <style>
-.graph {
-	display: block;
-	border-radius: 5px;
-	border: solid 0px gray;
-	padding: 20px;
-	background: #f0f0f0;
-	margin: 10px 20px;
-}
 .test {
 	width: 45%;
 	height: 300px;
@@ -48,7 +40,8 @@ hr {
 	border: solid 1px purple;
 }
 </style>
-<script src="graph.js"></script>
+<script src="mchartjs.js"></script>
+<link href="mgraphjs.css" rel="stylesheet" type="text/css" >
 </head>
 <body>
 
@@ -59,23 +52,19 @@ hr {
 <br/><br/><br/><br/>
 <!--Model data 12, 340, 52, 230, 194, 323,45, 263, 233, 46, 421, 213, 291, 56, 234, 632, 124, 452, 900-->
 
-<div class="graph test" gdata='{"type": "dot", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"stroke": "forestgreen", "data": [484,529,201,536,136,265,45,578,107,55]}, {"stroke": "darkred",  "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
-	<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
-	</div>
+
+<div class="graph test" gdata='{"type": "dot", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"stroke": "forestgreen", "data": [484,529,201,536,136,265,45,578,107,55]}, {"stroke": "red",  "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
 </div>
 <pre class="codebox">
 </pre>
+
 
 <div class="graph test" gdata='{"type": "region", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"fill": "skyblue", "data": [484,529,201,536,136,265,45,578,107,55]}, {"fill": "forestgreen", "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
-	<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
-	</div>
 </div>
 <pre class="codebox">
 </pre>
 
-<div class="graph test" gdata='{"type": "bar", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"fill": "forestgreen", "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
-	<div style="display: block; height: 100%;" onclick="convert_to_png(this.children[0])">
-	</div>
+<div class="graph test" gdata='{"type": "bar", "vgrids": true, "hgrids": true, "ydivs": 5, "stroke": "gray", "xdivs": 5, "datasets": [{"fill": "red", "data": [45,121,552,316,206,271,389,218,559,450]}]}'>
 </div>
 <pre class="codebox">
 </pre>
@@ -90,7 +79,14 @@ hr {
 		var html = graphs[i].outerHTML.toString();
 		html = html.replace(/</g, "&lt;");
 		html = html.replace(/>/g, "&gt;");
-		g.innerHTML = "# code\n\n" + html;
+		g.innerHTML = "<span style='color: deeppink'><b># code</b></span>\n\n" + html;
+	}
+	function insertAfter(ele, toins) {
+		if(ele.nextElementSibling == null) {
+			ele.parentNode.appendChild(toins);
+		} else {
+			ele.parentNode.insertAfter(ele.nextElementSibling, toins);
+		}
 	}
 </script>
 
