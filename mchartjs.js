@@ -14,7 +14,7 @@ function convert_to_png(svg) {
 
 window.onresize = window.onload = function dgs() {
 	mdiv = document.getElementById("mdiv");
-	var xs = document.getElementsByClassName("graph");
+	var xs = document.getElementsByClassName("mchart");
 	for (var i = 0; i < xs.length; i++) {
 
 		if(xs[i].children[0] == null) {
@@ -24,11 +24,11 @@ window.onresize = window.onload = function dgs() {
 			xs[i].appendChild(ele);
 		}
 
-		draw_graph(xs[i].children[0], JSON.parse(xs[i].getAttribute("gdata")));
+		draw_chart(xs[i].children[0], JSON.parse(xs[i].getAttribute("gdata")));
 	}
 }
 
-function draw_graph(ele, gdata) {
+function draw_chart(ele, gdata) {
 
 	mdiv.innerHTML = "";
 
