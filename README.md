@@ -31,6 +31,7 @@ vgrids | do you want to see vertical gridlines | (true\|false)
 hgrids | do you want to see horizontal gridlines | (true\|false)
 ydivs | number of horizontal gridlines you want | any +ve integer
 xdivs | number of vertical gridlines you want | any +ve integer
+background | background color of the chart |  any HTML color or rgb color code
 datasets | the data to be visualised | a JSON array of dataset (refer dataset attributes)
 
 ### Dataset attributes
