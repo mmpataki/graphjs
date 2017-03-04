@@ -57,7 +57,7 @@ function draw_chart(ele, gdata) {
 	var wd = +ele.offsetWidth;
 	var dtemp = "", ctemp = "", points = "";
 	var xoff = 30;
-	var yoff = 15;
+	var yoff = 20;
 	var yaspect = (ht - (2 * yoff)) / max;
 	var xaspect = (wd - (1 * xoff)) / (gdata.datasets[0].data.length + (gdata.type == "bar" ? 0 : -1));
 	var yh = ht / gdata.ydivs;
@@ -120,7 +120,7 @@ function draw_chart(ele, gdata) {
 			points = "";
 		}
 	}
-	ele.innerHTML = `<svg height='${ht + (2 * yoff)}' width='${wd + (2 * xoff)}' style='background: ${gdata.background};'>${glines}${dtemp}${glabels}</svg>`;
+	ele.innerHTML = `<svg height='${ht + yoff}' width='${wd}' style='background: ${gdata.background};'>${glines}${dtemp}${glabels}</svg>`;
 
 	if(debug) {
 		wkv("height", ht);
